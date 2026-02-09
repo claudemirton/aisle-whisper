@@ -4,11 +4,9 @@ import CheckCircleRoundedIcon from "@mui/icons-material/CheckCircleRounded";
 import PlaylistAddCheckRoundedIcon from "@mui/icons-material/PlaylistAddCheckRounded";
 import PrintRoundedIcon from "@mui/icons-material/PrintRounded";
 import RestartAltRoundedIcon from "@mui/icons-material/RestartAltRounded";
-import SaveAltRoundedIcon from "@mui/icons-material/SaveAltRounded";
 
 interface AuditSummaryScreenProps {
   onBackToAudit: () => void;
-  onFinish?: () => void;
 }
 
 const mockSummary = {
@@ -31,10 +29,7 @@ const mockSummary = {
   ],
 };
 
-const AuditSummaryScreen = ({
-  onBackToAudit,
-  onFinish,
-}: AuditSummaryScreenProps) => {
+const AuditSummaryScreen = ({ onBackToAudit }: AuditSummaryScreenProps) => {
   return (
     <Stack spacing={4} sx={{ width: "100%", maxWidth: 720, mx: "auto" }}>
       <Button

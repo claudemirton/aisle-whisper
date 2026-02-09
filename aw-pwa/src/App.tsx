@@ -173,10 +173,6 @@ function App() {
     setView("audit");
   };
 
-  const handleFinishAudit = () => {
-    setView("home");
-  };
-
   const handleCloseSettings = () => {
     setView("home");
   };
@@ -221,10 +217,7 @@ function App() {
           }}
         >
           <Container maxWidth="lg">
-            <AuditSummaryScreen
-              onBackToAudit={handleBackToAudit}
-              onFinish={handleFinishAudit}
-            />
+            <AuditSummaryScreen onBackToAudit={handleBackToAudit} />
           </Container>
         </Box>
       ) : (
