@@ -1,37 +1,161 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import appLogo from '/favicon.svg'
-import PWABadge from './PWABadge.tsx'
-import './App.css'
+import {
+  Box,
+  Button,
+  Chip,
+  Container,
+  CssBaseline,
+  Stack,
+  ThemeProvider,
+  Typography,
+  createTheme,
+} from "@mui/material";
+import PlayArrowRoundedIcon from "@mui/icons-material/PlayArrowRounded";
+import SettingsRoundedIcon from "@mui/icons-material/SettingsRounded";
+import PWABadge from "./PWABadge.tsx";
+import "./App.css";
+
+const theme = createTheme({
+  palette: {
+    mode: "light",
+    primary: {
+      main: "#0E6FFF",
+    },
+    secondary: {
+      main: "#FF7A45",
+    },
+    background: {
+      default: "#f5f7fb",
+      paper: "#ffffff",
+    },
+  },
+  typography: {
+    fontFamily: '"Inter", "Roboto", "Helvetica", "Arial", sans-serif',
+    h3: {
+      fontWeight: 700,
+      letterSpacing: "-0.01em",
+    },
+    subtitle1: {
+      fontWeight: 500,
+      letterSpacing: "0.01em",
+    },
+  },
+  shape: {
+    borderRadius: 16,
+  },
+  components: {
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          textTransform: "none",
+          borderRadius: 999,
+          paddingInline: 28,
+        },
+      },
+    },
+  },
+});
 
 function App() {
-  const [count, setCount] = useState(0)
+  const handleStartAudit = () => {
+    console.info("Start Audit clicked");
+  };
+
+  const handleOpenSettings = () => {
+    console.info("Settings clicked");
+  };
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={appLogo} className="logo" alt="Aisle Whisper PWA logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Aisle Whisper PWA</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-      <PWABadge />
-    </>
-  )
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <Box
+        sx={{
+          minHeight: "100vh",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          bgcolor: "background.default",
+          px: { xs: 3, md: 6 },
+          py: { xs: 6, md: 10 },
+        }}
+      >
+        <Container
+          maxWidth="sm"
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            gap: 4,
+            textAlign: "center",
+            px: { xs: 0, sm: 2 },
+          }}
+        >
+          <Box
+            component="img"
+            src="/icons/aisle-whisper-icon-192x192.png"
+            alt="Aisle Whisper icon"
+            sx={{ width: 96, height: 96, borderRadius: 3 }}
+          />
+
+          <Box>
+            <Typography
+              variant="h3"
+              color="text.primary"
+              gutterBottom
+              align="center"
+            >
+              Aisle Whisper PWA
+            </Typography>
+            <Typography
+              variant="subtitle1"
+              color="text.secondary"
+              align="center"
+            >
+              Real-time store shelf audit &amp; replenishment agent
+            </Typography>
+          </Box>
+
+          <Stack
+            direction={{ xs: "column", sm: "row" }}
+            spacing={2}
+            justifyContent="center"
+            alignItems="center"
+          >
+            <Button
+              variant="contained"
+              color="primary"
+              size="large"
+              startIcon={<PlayArrowRoundedIcon />}
+              onClick={handleStartAudit}
+            >
+              Start Audit
+            </Button>
+            <Button
+              variant="outlined"
+              color="secondary"
+              size="large"
+              startIcon={<SettingsRoundedIcon />}
+              onClick={handleOpenSettings}
+            >
+              Settings
+            </Button>
+          </Stack>
+
+          <Stack spacing={1} alignItems="center">
+            <Chip
+              label="v1.0"
+              color="primary"
+              size="small"
+              sx={{ fontWeight: 600 }}
+            />
+            <Typography variant="body2" color="text.secondary" align="center">
+              PWA • Works offline • Gemini-powered overlays
+            </Typography>
+            <PWABadge />
+          </Stack>
+        </Container>
+      </Box>
+    </ThemeProvider>
+  );
 }
 
-export default App
+export default App;
