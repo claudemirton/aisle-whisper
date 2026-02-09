@@ -29,6 +29,7 @@ export default defineConfig({
           "Real‑time store shelf audit (camera + voice) with overlays, checklist, and print preview.",
         theme_color: "#ffffff",
         display: "standalone",
+        orientation: "portrait-primary",
         icons: [
           {
             src: "icons/aisle-whisper-icon-48x48.png",
