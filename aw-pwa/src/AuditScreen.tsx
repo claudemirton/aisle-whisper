@@ -40,6 +40,7 @@ const CameraStream = ({ onFrame, overlay }: CameraStreamProps) => {
 
   useEffect(() => {
     let mounted = true;
+    let activeVideo: HTMLVideoElement | null = null;
     const startStream = async () => {
       try {
         const stream = await navigator.mediaDevices.getUserMedia({
@@ -50,9 +51,11 @@ const CameraStream = ({ onFrame, overlay }: CameraStreamProps) => {
           stream.getTracks().forEach((track) => track.stop());
           return;
         }
-        if (videoRef.current) {
-          videoRef.current.srcObject = stream;
-          await videoRef.current.play();
+        const videoElement = videoRef.current;
+        if (videoElement) {
+          activeVideo = videoElement;
+          videoElement.srcObject = stream;
+          await videoElement.play();
         }
       } catch (error) {
         console.error("Unable to access camera", error);
@@ -63,8 +66,11 @@ const CameraStream = ({ onFrame, overlay }: CameraStreamProps) => {
 
     return () => {
       mounted = false;
-      const stream = videoRef.current?.srcObject as MediaStream | null;
+      const stream = activeVideo?.srcObject as MediaStream | null;
       stream?.getTracks().forEach((track) => track.stop());
+      if (activeVideo) {
+        activeVideo.srcObject = null;
+      }
     };
   }, []);
 
@@ -339,9 +345,10 @@ const ActionPanel = ({
 
 interface AuditScreenProps {
   onBack?: () => void;
+  onAuditShelf: () => void;
 }
 
-const AuditScreen = ({ onBack }: AuditScreenProps) => {
+const AuditScreen = ({ onBack, onAuditShelf }: AuditScreenProps) => {
   const [detections, setDetections] = useState<OverlayDetection[]>(() => [
     {
       id: "gondola-1",
@@ -398,7 +405,7 @@ const AuditScreen = ({ onBack }: AuditScreenProps) => {
       <Stack
         direction={{ xs: "column", md: "row" }}
         spacing={4}
-        alignItems="stretch"
+        alignItems="flex-start"
       >
         <Stack spacing={3} flex={{ xs: 1, md: 1.5 }}>
           <CameraStream
@@ -410,7 +417,7 @@ const AuditScreen = ({ onBack }: AuditScreenProps) => {
           <VoiceCapture onAudioChunk={handleAudioChunk} />
           <Divider />
           <ActionPanel
-            onAudit={() => console.info("Audit triggered")}
+            onAudit={onAuditShelf}
             onGenerateChecklist={() => console.info("Checklist requested")}
             onPrintTags={() => console.info("Print requested")}
           />

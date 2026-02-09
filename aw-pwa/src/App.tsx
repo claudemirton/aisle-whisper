@@ -12,8 +12,10 @@ import {
 } from "@mui/material";
 import PlayArrowRoundedIcon from "@mui/icons-material/PlayArrowRounded";
 import SettingsRoundedIcon from "@mui/icons-material/SettingsRounded";
-import PWABadge from "./PWABadge.tsx";
-import AuditScreen from "./AuditScreen.tsx";
+import PWABadge from "./PWABadge";
+import AuditScreen from "./AuditScreen";
+import AuditSummaryScreen from "./AuditSummaryScreen";
+import SettingsScreen from "./SettingsScreen.tsx";
 import "./App.css";
 
 const theme = createTheme({
@@ -151,14 +153,32 @@ const HomeScreen = ({ onStartAudit, onOpenSettings }: HomeScreenProps) => {
 };
 
 function App() {
-  const [view, setView] = useState<"home" | "audit">("home");
+  const [view, setView] = useState<"home" | "audit" | "summary" | "settings">(
+    "home",
+  );
 
   const handleStartAudit = () => {
     setView("audit");
   };
 
+  const handleAuditShelf = () => {
+    setView("summary");
+  };
+
   const handleOpenSettings = () => {
-    console.info("Settings clicked");
+    setView("settings");
+  };
+
+  const handleBackToAudit = () => {
+    setView("audit");
+  };
+
+  const handleFinishAudit = () => {
+    setView("home");
+  };
+
+  const handleCloseSettings = () => {
+    setView("home");
   };
 
   return (
@@ -169,19 +189,58 @@ function App() {
           onStartAudit={handleStartAudit}
           onOpenSettings={handleOpenSettings}
         />
+      ) : view === "audit" ? (
+        <Box
+          sx={{
+            minHeight: "100vh",
+            bgcolor: "background.default",
+            px: { xs: 3, md: 6 },
+            pt: "10px",
+            pb: { xs: 4, md: 6 },
+            display: "flex",
+            justifyContent: "center",
+          }}
+        >
+          <Container maxWidth="lg">
+            <AuditScreen
+              onBack={() => setView("home")}
+              onAuditShelf={handleAuditShelf}
+            />
+          </Container>
+        </Box>
+      ) : view === "summary" ? (
+        <Box
+          sx={{
+            minHeight: "100vh",
+            bgcolor: "background.default",
+            px: { xs: 3, md: 6 },
+            pt: "10px",
+            pb: { xs: 4, md: 6 },
+            display: "flex",
+            justifyContent: "center",
+          }}
+        >
+          <Container maxWidth="lg">
+            <AuditSummaryScreen
+              onBackToAudit={handleBackToAudit}
+              onFinish={handleFinishAudit}
+            />
+          </Container>
+        </Box>
       ) : (
         <Box
           sx={{
             minHeight: "100vh",
             bgcolor: "background.default",
             px: { xs: 3, md: 6 },
-            py: { xs: 6, md: 8 },
+            pt: "10px",
+            pb: { xs: 4, md: 6 },
             display: "flex",
             justifyContent: "center",
           }}
         >
-          <Container maxWidth="lg">
-            <AuditScreen onBack={() => setView("home")} />
+          <Container maxWidth="md">
+            <SettingsScreen onClose={handleCloseSettings} />
           </Container>
         </Box>
       )}
